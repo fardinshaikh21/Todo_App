@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1>📝 Todo App</h1>
+        <p>Stay organized. Stay productive.</p>
+    </header>
+
+    <div class="main-container">
+
+        <!-- TOP INPUT -->
+        <div class="top-bar">
+            <form action="{% url 'home' %}" method="POST" class="task-form">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="✨ Add a new task..." required>
+                <button type="submit">➕ Add</button>
+            </form>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="container">
+
+            <!-- LEFT: PENDING TASKS -->
+            <div class="card left-div">
+                <h2>⏳ Pending Tasks</h2>
+
+                {% for t in tasks %}
+                    {% if not t.completed %}
+                        <div class="task-card">
+                            <p>{{ t.title }}</p>
+
+                            <div class="actions">
+                                <a href="{% url 'complete_task' t.id %}" class="complete-btn">✔ Complete</a>
+                                <a href="{% url 'delete_task' t.id %}" class="delete-btn">🗑 Delete</a>
+                            </div>
+
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="empty">No pending tasks 🚀</p>
+                {% endfor %}
+            </div>
+
+            <!-- RIGHT: COMPLETED TASKS -->
+            <div class="card right-div">
+                <h2>✅ Completed Tasks</h2>
+
+                {% for t in tasks %}
+                    {% if t.completed %}
+                        <div class="task-card done">
+                            <p>{{ t.title }}</p>
+
+                            <div class="actions">
+                                <a href="{% url 'undo_task' t.id %}" class="undo-btn">↩ Undo</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="empty">No completed tasks</p>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
