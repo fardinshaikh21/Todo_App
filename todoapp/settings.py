@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     
     # local apps
     "task",
+    "accounts",
     # "task.apps.TaskConfig",
     
     # third-party apps
